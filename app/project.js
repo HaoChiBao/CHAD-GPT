@@ -1,9 +1,17 @@
 let prompt = ''
+// let key = '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'
 function generateResponse() {
-    console.log("Calling GPT3")
+    let display = document.getElementById('display')
+    let text = document.getElementById('text')
+    attachImg(display, text)
+
+    console.log("Submitting")
+
     let url = "https://api.openai.com/v1/engines/text-davinci-003/completions";
-    let api = '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'
-    let bearer = 'Bearer ' + api
+    
+    let key = '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'
+    let bearer = 'Bearer ' + key
+    // console.log(bearer)
 
     prompt += '\n'+ document.getElementById('prompt').value
 
@@ -12,6 +20,7 @@ function generateResponse() {
         headers: {
             'Authorization': bearer,
             'Content-Type': 'application/json'
+            // 'Content-Type: application/json'
         },
         body: JSON.stringify({
             prompt: prompt,
@@ -21,7 +30,7 @@ function generateResponse() {
             frequency_penalty: 0,
             presence_penalty: 0,
             stream: false,
-            logit_bias: {"10000": -100}
+            // logit_bias: {"10000": -100}
             // "stop": "\n"
         })
 
@@ -32,7 +41,8 @@ function generateResponse() {
         console.log(data)
         console.log(data['choices'][0].text)   
 
-        attachResponse(data['choices'][0].text)
+        removeImg(display)
+        attachResponse(data['choices'][0].text, text)
 
         // return data['choices'][0].text
     })
@@ -42,11 +52,23 @@ function generateResponse() {
 
 }
 
-function attachResponse(response){
-    let text = document.getElementById('text')
+function attachResponse(response, text){
     text.style.color = 'white'
     text.innerText = response
 }
+
+function removeImg(display){
+    display.removeChild(display.querySelector('img'))
+}
+
+function attachImg(display, text){
+    let img = document.createElement('img')
+    img.src = 'images/loading.gif'
+
+    text.innerText = ''
+    display.appendChild(img)
+}
+
 let button = document.getElementById('execute')
 button.addEventListener('click', generateResponse)
 window.addEventListener('keydown', (e)=>{

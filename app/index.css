@@ -75,11 +75,17 @@ body {
     width: 100%;
 
     font-size: 1rem;
-
+    
     text-align: center;
     color: #5f5f5f;
-
+    
     padding: 0rem 1rem;
+}
+.container #display img{
+    height: 8%;
+    width: 8%;
+    object-fit: contain;
+    position: absolute;
 }
 
 .container #footing {
